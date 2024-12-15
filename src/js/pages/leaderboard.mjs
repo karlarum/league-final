@@ -1,4 +1,3 @@
-// leaderboard.mjs
 import { Storage } from '../storage.js';
 
 export function leaderboardContent() {
@@ -40,8 +39,12 @@ function renderLeaderboard() {
         return `<div class="no-teams">No teams drafted yet!</div>`;
     }
 
-    return teams
-        .sort((a, b) => b.points - a.points)
+    // Sort teams by points and get the top 3
+    const topTeams = teams
+        .sort((a, b) => b.points - a.points) // Sort by points in descending order
+        .slice(0, 3); // Get only the top 3 teams
+
+    return topTeams
         .map((team, index) => `
             <div class="leaderboard-row ${index < 3 ? 'top-three' : ''}">
                 <div class="rank">
@@ -58,6 +61,18 @@ function renderLeaderboard() {
             </div>
         `).join('');
 }
+
+function getRankBadge(rank) {
+    if (rank === 1) {
+        return `<span class="badge gold">🥇</span>`;
+    } else if (rank === 2) {
+        return `<span class="badge silver">🥈</span>`;
+    } else if (rank === 3) {
+        return `<span class="badge bronze">🥉</span>`;
+    }
+    return '';
+}
+
 
 function showRosterModal(username) {
     const teams = Storage.getAllTeams();

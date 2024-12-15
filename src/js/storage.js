@@ -3,7 +3,7 @@ export const Storage = {
         // Get existing teams or initialize empty array
         const teams = this.getAllTeams();
         
-        // Add timestamp and initial points
+        // timestamp and initial points
         team.timestamp = Date.now();
         team.points = 0;
         team.username = `User${teams.length + 1}`; // Simple username generation

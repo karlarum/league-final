@@ -1,6 +1,6 @@
 import { RIOT_API_KEY } from './apiConfig.js';
 
-// Changed BASE_URL to use our proxy
+// Changed BASE_URL to use proxy
 const BASE_URL = 'https://na1.api.riotgames.com';
 
 const mockPlayers = [
@@ -32,7 +32,7 @@ export async function getProPlayers() {
         const data = await response.json();
         console.log('API Response:', data);
 
-        // For now, return mock data while we test the connection
+        // For now, return mock data while testing the connection
         return mockPlayers;
 
     } catch (error) {

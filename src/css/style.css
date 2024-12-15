@@ -155,7 +155,6 @@ main {
     }
 }
 
-/* Add this to your #app div content */
 #app > div {
     animation: fadeIn 0.5s ease-out;
 }
@@ -331,7 +330,6 @@ footer {
     color: var(--gold);
 }
 
-/* Add these to your existing styles */
 .role-slot {
     position: relative;
     display: flex;

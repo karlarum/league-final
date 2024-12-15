@@ -34,7 +34,6 @@ const mockPlayerStats = [
             fantasyPoints: 20.5
         }
     },
-    // Add more players as needed
 ];
 
 export function scoreboardContent() {

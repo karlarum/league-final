@@ -1,4 +1,3 @@
-// draft.mjs
 import { getProPlayers } from '../riotApi.js';
 import { Storage } from '../storage.js';
 // debugging
@@ -22,7 +21,7 @@ export function draftContent() {
     // Set up event listeners after content is loaded
     setTimeout(() => {
         setupDraftEvents();
-        loadPlayers(); // This will handle fetching the players
+        loadPlayers(); // fetching the players
     }, 0);
 
     return `
@@ -134,7 +133,6 @@ function updateDraftUI() {
         playerGrid.innerHTML = renderAvailablePlayers();
     }
 
-    // Re-attach event listeners after updating UI
     setupDraftEvents();
 }
 
