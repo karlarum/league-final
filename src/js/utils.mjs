@@ -1,7 +1,7 @@
 export async function loadHeaderFooter() {
     const [headerResponse, footerResponse] = await Promise.all([
-        fetch('/src/partials/header.html'),
-        fetch('/src/partials/footer.html')
+        fetch('/partials/header.html'),
+        fetch('/partials/footer.html')
     ]);
 
     const [headerHtml, footerHtml] = await Promise.all([
