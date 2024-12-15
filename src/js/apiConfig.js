@@ -1,0 +1,1 @@
+export const RIOT_API_KEY = 'RGAPI-706a09c3-7821-405f-a22a-4d65743bf9c7';
