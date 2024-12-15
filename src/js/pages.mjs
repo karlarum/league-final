@@ -11,7 +11,6 @@ export function loadPage(page) {
         link.classList.remove('active');
     });
     
-    // Add active class to current page link
     const activeLink = document.getElementById(`${page}-link`);
     if (activeLink) activeLink.classList.add('active');
 
