@@ -14,3 +14,5 @@ export function homeContent() {
         </div>
     `;
 }
+
+// <img src="/images/lol3.webp" alt="Fantasy League Background" class="bottom-image" />

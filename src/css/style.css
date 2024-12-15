@@ -122,6 +122,18 @@ main {
     color: #fff;
 }
 
+/* decide if I want to display image or not */
+/* .bottom-image {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: auto;
+    z-index: -1;
+    opacity: 0.2;
+} */
+
 /* Draft page styles */
 .player-grid {
     display: grid;
@@ -497,10 +509,11 @@ h3 {
     background: var(--blue);
     color: white;
     border: 2px solid var(--gold);
+    font-weight: 700;
 }
 
 .stats-row:hover {
-    background: var(--light-blue);
+    background: var(--gold);
     color: var(--black);
 }
 
