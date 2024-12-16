@@ -4,12 +4,12 @@ import { RIOT_API_KEY } from './apiConfig.js';
 const BASE_URL = 'https://na1.api.riotgames.com';
 
 const mockPlayers = [
-    { id: 1, name: "Faker", team: "T1", role: "Mid", points: 0, imageUrl: "/api/placeholder/150/150" },
-    { id: 2, name: "Chovy", team: "Gen.G", role: "Mid", points: 0, imageUrl: "/api/placeholder/150/150" },
-    { id: 3, name: "Zeus", team: "T1", role: "Top", points: 0, imageUrl: "/api/placeholder/150/150" },
-    { id: 4, name: "Keria", team: "T1", role: "Support", points: 0, imageUrl: "/api/placeholder/150/150" },
-    { id: 5, name: "Gumayusi", team: "T1", role: "ADC", points: 0, imageUrl: "/api/placeholder/150/150" },
-    { id: 6, name: "Oner", team: "T1", role: "Jungle", points: 0, imageUrl: "/api/placeholder/150/150" }
+    { id: 1, name: "Faker", team: "T1", role: "Mid", points: 0, imageUrl: "/images/Faker.webp" },
+    { id: 2, name: "Chovy", team: "Gen.G", role: "Mid", points: 0, imageUrl: "/images/Chovy.webp" },
+    { id: 3, name: "Zeus", team: "T1", role: "Top", points: 0, imageUrl: "/images/Zeus.webp" },
+    { id: 4, name: "Keria", team: "T1", role: "Support", points: 0, imageUrl: "/images/Keria.webp" },
+    { id: 5, name: "Gumayusi", team: "T1", role: "ADC", points: 0, imageUrl: "/images/Gumayusi.webp" },
+    { id: 6, name: "Oner", team: "T1", role: "Jungle", points: 0, imageUrl: "/images/Oner.webp" }
 ];
 
 export async function getProPlayers() {
