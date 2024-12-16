@@ -37,12 +37,6 @@ const mockPlayerStats = [
 ];
 
 export function scoreboardContent() {
-    // Set up event listeners and refresh timer after content is loaded
-    setTimeout(() => {
-        setupScoreboardEvents();
-        startLiveUpdates();
-    }, 0);
-
     return `
         <div class="scoreboard-content">
             <h2>Live Scoreboard</h2>
@@ -90,6 +84,11 @@ export function scoreboardContent() {
             </div>
         </div>
     `;
+}
+
+export function initializeScoreboard() {
+    setupScoreboardEvents();
+    startLiveUpdates();
 }
 
 function renderCurrentMatch() {

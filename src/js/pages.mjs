@@ -1,12 +1,11 @@
 import { homeContent } from "./pages/home.mjs";
 import { draftContent } from "./pages/draft.mjs";
-import { scoreboardContent } from "./pages/scoreboard.mjs";
+import { scoreboardContent, initializeScoreboard } from "./pages/scoreboard.mjs";
 import { leaderboardContent } from "./pages/leaderboard.mjs";
 
 export function loadPage(page) {
     const appDiv = document.getElementById('app');
     
-    // Remove any active classes from nav links
     document.querySelectorAll('nav a').forEach(link => {
         link.classList.remove('active');
     });
@@ -23,6 +22,7 @@ export function loadPage(page) {
             break;
         case 'scoreboard':
             appDiv.innerHTML = scoreboardContent();
+            initializeScoreboard();
             break;
         case 'leaderboard':
             appDiv.innerHTML = leaderboardContent();
