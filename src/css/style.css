@@ -414,6 +414,40 @@ footer {
     cursor: not-allowed;
 }
 
+/* draft page animation */
+.save-success {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--black);
+    color: var(--gold);
+    padding: 1.5rem 3rem;
+    font-weight: bold;
+    z-index: 1000;
+    border: 3px solid;
+    animation: runicBorder 2s ease-in-out;
+}
+
+@keyframes runicBorder {
+    0% {
+        border-image: linear-gradient(45deg, var(--gold), var(--light-blue)) 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        border-image: linear-gradient(180deg, var(--light-blue), var(--gold)) 1;
+        transform: translate(-50%, -50%) scale(1.02);
+    }
+    100% {
+        border-image: linear-gradient(45deg, var(--gold), var(--light-blue)) 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.save-success {
+    box-shadow: 0 0 15px rgba(10, 200, 185, 0.3);
+}
+
 /* leaderboard page */
 
 .leaderboard-content {

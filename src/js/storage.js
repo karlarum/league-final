@@ -6,7 +6,7 @@ export const Storage = {
         // timestamp and initial points
         team.timestamp = Date.now();
         team.points = 0;
-        team.username = `User${teams.length + 1}`; // Simple username generation
+        team.username = `User${teams.length + 1}`;
 
         // Add new team
         teams.push(team);

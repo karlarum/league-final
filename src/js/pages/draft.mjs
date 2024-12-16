@@ -15,10 +15,9 @@ const mockPlayers = [
 // Keep track of drafted players
 let draftedPlayers = {};
 let errorMessage = '';
-let players = []; // Will store our API data
+let players = [];
 
 export function draftContent() {
-    // Set up event listeners after content is loaded
     setTimeout(() => {
         setupDraftEvents();
         loadPlayers(); // fetching the players
@@ -138,7 +137,6 @@ function updateDraftUI() {
 
 function saveDraftedTeam() {
     const playerArray = Object.values(draftedPlayers);
-    console.log('Attempting to save team:', playerArray); // debugging
     
     if (playerArray.length === 5) {
         const team = {
@@ -146,24 +144,22 @@ function saveDraftedTeam() {
             totalPoints: 0,
         };
         
-        console.log('Team to save:', team); // debugging
         Storage.saveTeam(team);
 
-        console.log('Teams after save:', Storage.getAllTeams()); //debugging
+        //  success notification with runic border
+        const notification = document.createElement('div');
+        notification.className = 'save-success';
+        notification.textContent = 'Team Successfully Saved! 🏆';
+        document.body.appendChild(notification);
         
-        errorMessage = 'Team successfully saved!';
+        // remove notification
         setTimeout(() => {
-            errorMessage = '';
-            updateDraftUI();
-        }, 3000);
+            notification.remove();
+        }, 2000);
 
-        draftedPlayers = {}; //debugging
+        draftedPlayers = {};
     } else {
         errorMessage = 'Please draft all positions before saving!';
-        setTimeout(() => {
-            errorMessage = '';
-            updateDraftUI();
-        }, 3000);
     }
     updateDraftUI();
 }
