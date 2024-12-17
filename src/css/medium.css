@@ -1,0 +1,43 @@
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .home-content h2 {
+        font-size: 2rem;
+    }
+
+    main {
+        padding: 1rem;
+    }
+
+    .draft-container {
+        grid-template-columns: 1fr;
+    }
+
+    .leaderboard-content {
+        padding: 1rem;
+    }
+
+    .leaderboard-header,
+    .leaderboard-row {
+        grid-template-columns: 0.5fr 1.5fr 1fr 1fr;
+        font-size: 0.9rem;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1rem;
+    }
+
+    .roster-player {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    .player-team {
+        display: none;
+    }
+}

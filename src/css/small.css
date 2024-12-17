@@ -1,0 +1,18 @@
+@media (max-width: 480px) {
+    .player-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .leaderboard-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .badge {
+        font-size: 1.2rem;
+    }
+
+    .view-roster-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}

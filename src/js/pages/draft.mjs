@@ -146,7 +146,7 @@ function saveDraftedTeam() {
         
         Storage.saveTeam(team);
 
-        //  success notification with runic border
+        // success notification with runic border
         const notification = document.createElement('div');
         notification.className = 'save-success';
         notification.textContent = 'Team Successfully Saved! 🏆';
@@ -157,7 +157,6 @@ function saveDraftedTeam() {
             notification.remove();
         }, 2000);
 
-        draftedPlayers = {};
     } else {
         errorMessage = 'Please draft all positions before saving!';
     }

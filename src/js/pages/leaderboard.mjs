@@ -1,6 +1,6 @@
 import { Storage } from '../storage.js';
 
-export function leaderboardContent() {
+function leaderboardContent() {
     setTimeout(() => {
         setupLeaderboardEvents();
     }, 0);
@@ -36,23 +36,22 @@ function renderLeaderboard() {
     const teams = Storage.getAllTeams();
     
     if (teams.length === 0) {
-        return `<div class="no-teams">No teams drafted yet!</div>`;
+        return `<div class="no-teams">No teams drafted yet! Be the first to create a team!</div>`;
     }
 
-    // Sort teams by points and get the top 3
     const topTeams = teams
-        .sort((a, b) => b.points - a.points) // Sort by points in descending order
+        .sort((a, b) => b.totalPoints - a.totalPoints) 
         .slice(0, 3); // Get only the top 3 teams
 
     return topTeams
         .map((team, index) => `
-            <div class="leaderboard-row ${index < 3 ? 'top-three' : ''}">
+            <div class="leaderboard-row ${index < 3 ? 'top-three' : ''}" data-rank="${index + 1}">
                 <div class="rank">
                     ${getRankBadge(index + 1)}
                     ${index + 1}
                 </div>
-                <div class="username">${team.username}</div>
-                <div class="points">${team.points}</div>
+                <div class="username">${team.username || 'Anonymous Team'}</div>
+                <div class="points">${team.totalPoints || 0}</div>
                 <div class="roster">
                     <button class="view-roster-btn" data-username="${team.username}">
                         View Roster
@@ -63,16 +62,13 @@ function renderLeaderboard() {
 }
 
 function getRankBadge(rank) {
-    if (rank === 1) {
-        return `<span class="badge gold">🥇</span>`;
-    } else if (rank === 2) {
-        return `<span class="badge silver">🥈</span>`;
-    } else if (rank === 3) {
-        return `<span class="badge bronze">🥉</span>`;
-    }
-    return '';
+    const badges = {
+        1: '<span class="badge gold" title="First Place">🥇</span>',
+        2: '<span class="badge silver" title="Second Place">🥈</span>',
+        3: '<span class="badge bronze" title="Third Place">🥉</span>'
+    };
+    return badges[rank] || '';
 }
-
 
 function showRosterModal(username) {
     const teams = Storage.getAllTeams();
@@ -87,23 +83,55 @@ function showRosterModal(username) {
             <div class="roster-list">
                 ${team.roster.map(player => `
                     <div class="roster-player">
-                        ${player.name} (${player.role})
+                        <span class="player-name">${player.name}</span>
+                        <span class="player-role ${player.role.toLowerCase()}">${player.role}</span>
+                        <span class="player-team">${player.team}</span>
                     </div>
                 `).join('')}
             </div>
-            <button class="close-modal">Close</button>
+            <div class="modal-footer">
+                <div class="team-total">Total Points: ${team.totalPoints || 0}</div>
+                <button class="close-modal">Close</button>
+            </div>
         </div>
     `;
 
     document.body.appendChild(modal);
 
-    modal.querySelector('.close-modal').addEventListener('click', () => {
-        modal.remove();
-    });
-
+    const closeButton = modal.querySelector('.close-modal');
+    closeButton.addEventListener('click', () => modal.remove());
     modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.remove();
-        }
+        if (e.target === modal) modal.remove();
     });
 }
+
+function setupLeaderboardEvents() {
+    const timeFilter = document.getElementById('time-filter');
+    if (timeFilter) {
+        timeFilter.addEventListener('change', (e) => {
+            console.log('Time filter changed:', e.target.value);
+            updateLeaderboard(e.target.value);
+        });
+    }
+
+    const rosterButtons = document.querySelectorAll('.view-roster-btn');
+    rosterButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const username = e.target.dataset.username;
+            if (username) showRosterModal(username);
+        });
+    });
+}
+
+function updateLeaderboard(timeFrame) {
+    const leaderboardTable = document.querySelector('.leaderboard-table');
+    if (!leaderboardTable) return;
+
+    const headerHTML = leaderboardTable.querySelector('.leaderboard-header').outerHTML;
+    
+    leaderboardTable.innerHTML = headerHTML + renderLeaderboard();
+    
+    setupLeaderboardEvents();
+}
+
+export { leaderboardContent, setupLeaderboardEvents };

@@ -1,4 +1,5 @@
-// Mock data for live scores
+import { Storage } from '../storage.js';
+
 const mockMatchData = {
     currentMatch: {
         team1: "T1",
@@ -33,7 +34,7 @@ const mockPlayerStats = [
             cs: 215,
             fantasyPoints: 20.5
         }
-    },
+    }
 ];
 
 export function scoreboardContent() {
@@ -41,8 +42,16 @@ export function scoreboardContent() {
         <div class="scoreboard-content">
             <h2>Live Scoreboard</h2>
             
-            <div class="match-info">
-                ${renderCurrentMatch()}
+            <div class="current-match">
+                <div class="match-teams">
+                    <span class="team1">${mockMatchData.currentMatch.team1}</span>
+                    <span class="score">${mockMatchData.currentMatch.score}</span>
+                    <span class="team2">${mockMatchData.currentMatch.team2}</span>
+                </div>
+                <div class="match-details">
+                    <span class="status">${mockMatchData.currentMatch.status}</span>
+                    <span class="duration">${mockMatchData.currentMatch.gameDuration}</span>
+                </div>
             </div>
 
             <div class="scoreboard-container">
@@ -60,19 +69,16 @@ export function scoreboardContent() {
                     </select>
                 </div>
 
-                <div class="player-stats-container">
-                    <h3>Live Player Stats</h3>
-                    <div class="stats-table">
-                        <div class="stats-header">
-                            <div class="player">Player</div>
-                            <div class="team">Team</div>
-                            <div class="role">Role</div>
-                            <div class="kda">KDA</div>
-                            <div class="cs">CS</div>
-                            <div class="points">Fantasy Points</div>
-                        </div>
-                        ${renderPlayerStats()}
+                <div class="stats-table">
+                    <div class="stats-header">
+                        <div>Player</div>
+                        <div>Team</div>
+                        <div>Role</div>
+                        <div>KDA</div>
+                        <div>CS</div>
+                        <div>Fantasy Points</div>
                     </div>
+                    ${renderPlayerStats()}
                 </div>
 
                 <div class="your-team-summary">
@@ -86,115 +92,85 @@ export function scoreboardContent() {
     `;
 }
 
-export function initializeScoreboard() {
-    setupScoreboardEvents();
-    startLiveUpdates();
-}
-
-function renderCurrentMatch() {
-    const { currentMatch } = mockMatchData;
-    return `
-        <div class="current-match">
-            <div class="match-teams">
-                <span class="team1">${currentMatch.team1}</span>
-                <span class="score">${currentMatch.score}</span>
-                <span class="team2">${currentMatch.team2}</span>
-            </div>
-            <div class="match-details">
-                <span class="status">${currentMatch.status}</span>
-                <span class="duration">${currentMatch.gameDuration}</span>
-            </div>
-        </div>
-    `;
-}
-
 function renderPlayerStats() {
     return mockPlayerStats.map(player => `
         <div class="stats-row">
-            <div class="player">${player.name}</div>
-            <div class="team">${player.team}</div>
-            <div class="role">${player.role}</div>
-            <div class="kda">
-                ${player.currentStats.kills}/${player.currentStats.deaths}/${player.currentStats.assists}
-            </div>
-            <div class="cs">${player.currentStats.cs}</div>
-            <div class="points">${player.currentStats.fantasyPoints}</div>
+            <div>${player.name}</div>
+            <div>${player.team}</div>
+            <div>${player.role}</div>
+            <div>${player.currentStats.kills}/${player.currentStats.deaths}/${player.currentStats.assists}</div>
+            <div>${player.currentStats.cs}</div>
+            <div>${player.currentStats.fantasyPoints}</div>
         </div>
     `).join('');
 }
 
 function renderTeamSummary() {
-    // In a real application, this would calculate points based on your drafted players
-    const totalPoints = mockPlayerStats
-        .reduce((sum, player) => sum + player.currentStats.fantasyPoints, 0);
-    
+    const userTeam = Storage.getAllTeams()[0];
+    let totalPoints = 0;
+
+    if (userTeam && userTeam.roster) {
+        totalPoints = userTeam.roster.reduce((sum, player) => {
+            const mockPlayer = mockPlayerStats.find(p => p.name === player.name);
+            return sum + (mockPlayer?.currentStats?.fantasyPoints || 0);
+        }, 0);
+    }
+
+    const formattedPoints = Number(totalPoints).toFixed(1);
+
     return `
-        <div class="team-summary">
-            <div class="total-points">
-                <span>Total Points:</span>
-                <span class="points-value">${totalPoints.toFixed(1)}</span>
-            </div>
+        <div class="total-points">
+            <span>Total Fantasy Points:</span>
+            <span class="points-value">${formattedPoints}</span>
         </div>
     `;
 }
 
+export function initializeScoreboard() {
+    setupScoreboardEvents();
+    startLiveUpdates();
+}
+
+function setupScoreboardEvents() {
+    document.getElementById('match-filter')?.addEventListener('change', (e) => {
+        console.log('Match filter changed to:', e.target.value);
+    });
+
+    document.getElementById('team-filter')?.addEventListener('change', (e) => {
+        console.log('Team filter changed to:', e.target.value);
+    });
+}
+
 function calculateFantasyPoints(stats) {
-    // Example fantasy points calculation
-    return (
+    const points = (
         stats.kills * 3 +
         stats.assists * 1.5 -
         stats.deaths * 1 +
         stats.cs * 0.02
-    ).toFixed(1);
+    );
+    return Number(points).toFixed(1);
 }
 
 function startLiveUpdates() {
-    // Simulate live updates every 30 seconds
     setInterval(() => {
         updateMatchStats();
     }, 30000);
 }
 
 function updateMatchStats() {
-    // In a real application, this would fetch new data from your backend
-    // For now, we'll just randomly update some stats
     mockPlayerStats.forEach(player => {
         player.currentStats.cs += Math.floor(Math.random() * 10);
         player.currentStats.fantasyPoints = calculateFantasyPoints(player.currentStats);
     });
 
-    // Update the UI
-    const statsContainer = document.querySelector('.stats-table');
-    if (statsContainer) {
-        statsContainer.innerHTML = `
-            <div class="stats-header">
-                <div class="player">Player</div>
-                <div class="team">Team</div>
-                <div class="role">Role</div>
-                <div class="kda">KDA</div>
-                <div class="cs">CS</div>
-                <div class="points">Fantasy Points</div>
-            </div>
-            ${renderPlayerStats()}
-        `;
+    const statsTable = document.querySelector('.stats-table');
+    if (statsTable) {
+        const headerHTML = statsTable.querySelector('.stats-header').outerHTML;
+        statsTable.innerHTML = headerHTML + renderPlayerStats();
     }
 
     const teamPoints = document.getElementById('team-points');
     if (teamPoints) {
         teamPoints.innerHTML = renderTeamSummary();
     }
-}
-
-function setupScoreboardEvents() {
-    // Match filter change handler
-    document.getElementById('match-filter')?.addEventListener('change', (e) => {
-        // In a real application, this would fetch new match data
-        console.log('Match filter changed to:', e.target.value);
-    });
-
-    // Team filter change handler
-    document.getElementById('team-filter')?.addEventListener('change', (e) => {
-        // In a real application, this would filter the displayed players
-        console.log('Team filter changed to:', e.target.value);
-    });
 }

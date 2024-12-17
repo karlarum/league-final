@@ -1,4 +1,6 @@
-/* style.css */
+@import 'medium.css';
+@import 'small.css';
+
 :root {
     --dark-blue: #0A1428;
     --gold: #C89B3C;
@@ -29,7 +31,6 @@ body {
     0% { background-position: 0% 50%; }
     100% { background-position: 100% 50%; }
 }
-
 
 /* Header styles */
 header {
@@ -82,9 +83,13 @@ main {
     width: 100%;
 }
 
+/* home page */
+
 .home-content {
     text-align: center;
     padding: 2rem;
+    position: relative;
+    z-index: 2;
 }
 
 .home-content h2 {
@@ -146,11 +151,6 @@ main {
     z-index: -1;
 }
 
-.home-content {
-    position: relative;
-    z-index: 2;
-}
-
 a.button {
     display: inline-block;
     margin-top: 2rem;
@@ -181,7 +181,7 @@ a.button:hover {
     padding: 1rem;
 }
 
-/* Fade in animation for page content */
+/* Fade in animation */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -251,31 +251,18 @@ button:hover {
     box-shadow: 0 0 20px var(--light-blue);
 }
 
+/* Draft page */
+
 /* Card hover effects (for draft players) */
 .player-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.player-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(200, 155, 60, 0.2);
-}
-
-/* Loading animation */
-.loading {
-    position: relative;
-}
-
-.loading::after {
-    content: '...';
-    position: absolute;
-    animation: loadingDots 1.5s infinite;
-}
-
-@keyframes loadingDots {
-    0% { content: '.'; }
-    33% { content: '..'; }
-    66% { content: '...'; }
+    background-color: var(--blue);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Highlight effect for new scores or updates */
@@ -298,23 +285,7 @@ footer {
     grid-template-columns: 2fr 1fr;
     gap: 2rem;
     padding: 1rem;
-}
-
-.player-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1.5rem;
-}
-
-.player-card {
-    background-color: var(--blue);
-    border-radius: 8px;
-    padding: 1.5rem;
-    text-align: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    position: relative;
 }
 
 .player-card:hover .player-image {
@@ -377,6 +348,22 @@ footer {
     background-color: var(--blue);
     padding: 1.5rem;
     border-radius: 8px;
+    position: sticky;
+    top: 2rem;
+    height: fit-content;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    border: 2px solid var(--gold);
+    transition: all 0.3s ease;
+}
+
+.your-team:hover {
+    box-shadow: 0 0 20px rgba(10, 200, 185, 0.2);
+}
+
+.available-players {
+    overflow-y: auto;
+    padding-right: 1rem;
 }
 
 .role-slot {
@@ -463,66 +450,227 @@ footer {
 
 .leaderboard-content {
     padding: 2rem;
-    color: #0A1428;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.leaderboard-content h2 {
+    color: var(--gold);
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    font-weight: bold;
 }
 
 .leaderboard-container {
     background: var(--blue);
     border-radius: 8px;
-    padding: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 0 20px rgba(10, 200, 185, 0.1);
+    border: 2px solid var(--gold);
 }
 
 .leaderboard-filters {
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .leaderboard-select {
-    padding: 0.5rem;
-    border: 1px solid #0A323C;
+    background-color: var(--black);
+    color: var(--gold);
+    border: 2px solid var(--gold);
+    padding: 0.5rem 1rem;
     border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.leaderboard-row {
-    display: grid;
-    grid-template-columns: 0.5fr 2fr 1fr 1fr;
-    padding: 1rem;
-    border-bottom: 1px solid #eee;
-    align-items: center;
-    color: white;
+.leaderboard-select:hover {
+    background-color: var(--dark-blue);
+    box-shadow: 0 0 10px var(--light-blue);
 }
 
 .leaderboard-header {
     display: grid;
     grid-template-columns: 0.5fr 2fr 1fr 1fr;
     padding: 1rem;
+    background: var(--black);
+    color: var(--gold);
     font-weight: bold;
-    background: #0A1428;
-    color: #C89B3C;
+    border-radius: 4px 4px 0 0;
+    border: 2px solid var(--gold);
 }
 
-.top-three {
-    background-color: var(--blue);
+.leaderboard-row {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr;
+    padding: 1rem;
+    border-bottom: 1px solid var(--gold);
+    align-items: center;
+    color: white;
+    transition: all 0.3s ease;
 }
 
+.leaderboard-row:hover {
+    background: var(--dark-blue);
+    transform: translateX(5px);
+}
+
+.leaderboard-row.top-three {
+    background-color: rgba(12, 37, 47, 0.6);
+}
+
+.rank {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--light-blue);
+    font-weight: bold;
+}
+
+.badge {
+    font-size: 1.5rem;
+}
+
+.username {
+    color: var(--light-blue);
+    font-weight: bold;
+}
+
+.points {
+    color: var(--gold);
+    font-weight: bold;
+}
+
+.view-roster-btn {
+    background-color: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.view-roster-btn:hover {
+    background-color: var(--light-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px var(--light-blue);
+}
+
+/* Modal Styles */
 .roster-modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(1, 10, 19, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
 }
 
 .modal-content {
-    background: white;
+    background: var(--blue);
     padding: 2rem;
     border-radius: 8px;
     max-width: 500px;
     width: 90%;
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 30px rgba(10, 200, 185, 0.2);
 }
+
+.modal-content h3 {
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+.roster-list {
+    margin-bottom: 1.5rem;
+}
+
+.roster-player {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    padding: 0.8rem;
+    border-bottom: 1px solid var(--gold);
+    color: white;
+}
+
+.roster-player:hover {
+    background: rgba(10, 200, 185, 0.1);
+}
+
+.player-name {
+    color: var(--light-blue);
+    font-weight: bold;
+}
+
+.player-role {
+    color: var(--gold);
+    text-align: center;
+}
+
+.player-team {
+    color: white;
+    text-align: right;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--gold);
+}
+
+.team-total {
+    color: var(--gold);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.close-modal {
+    background-color: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.close-modal:hover {
+    background-color: var(--light-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px var(--light-blue);
+}
+
+.no-teams {
+    text-align: center;
+    padding: 3rem;
+    color: var(--light-blue);
+    font-size: 1.2rem;
+    font-style: italic;
+}
+
+/* Role-specific colors */
+.top { color: #FF7F7F; }
+.jungle { color: #6EE7B7; }
+.mid { color: #FFD700; }
+.adc { color: #FF9F7F; }
+.support { color: #C084FC; }
 
 /* scoreboard page */
 
@@ -642,31 +790,4 @@ h3 {
     text-align: center;
     padding: 2rem;
     color: var(--light-blue);
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    nav {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .home-content h2 {
-        font-size: 2rem;
-    }
-
-    main {
-        padding: 1rem;
-    }
-
-    .draft-container {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 480px) {
-    .player-grid {
-        grid-template-columns: 1fr;
-    }
 }
