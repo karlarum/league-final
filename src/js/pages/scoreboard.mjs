@@ -1,3 +1,4 @@
+//scoreboard.mjs
 import { Storage } from '../storage.js';
 
 const mockMatchData = {

@@ -9,7 +9,6 @@
     --black: #010A13;
 }
 
-/* Reset and base styles */
 * {
     margin: 0;
     padding: 0;
@@ -32,7 +31,7 @@ body {
     100% { background-position: 100% 50%; }
 }
 
-/* Header styles */
+/* HEADER */
 header {
     background-color: var(--black);
     padding: 1rem 0;
@@ -48,6 +47,8 @@ header h1 {
     margin-bottom: 1rem;
 }
 
+/* NAVIGATION */
+
 nav {
     display: flex;
     justify-content: center;
@@ -56,6 +57,8 @@ nav {
 }
 
 nav a {
+    position: relative;
+    overflow: hidden;
     color: var(--light-blue);
     text-decoration: none;
     font-weight: bold;
@@ -64,9 +67,24 @@ nav a {
     transition: all 0.3s ease;
 }
 
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--gold);
+    transition: width 0.3s ease;
+}
+
 nav a:hover {
     color: var(--gold);
     background-color: rgba(10, 200, 185, 0.1);
+}
+
+nav a:hover::after {
+    width: 100%;
 }
 
 nav a.active {
@@ -74,7 +92,7 @@ nav a.active {
     border-bottom: 2px solid var(--gold);
 }
 
-/* Main content styles */
+/* MAIN CONTENT */
 main {
     flex: 1;
     padding: 2rem;
@@ -83,7 +101,7 @@ main {
     width: 100%;
 }
 
-/* home page */
+/* HOME PAGE */
 
 .home-content {
     text-align: center;
@@ -126,14 +144,13 @@ main {
 
 .featured-section li {
     margin: 0.5rem 0;
-    color: #fff;
+    color: white;
 }
 
-/* background image for home page */
+/* HOME PAGE - BACKGROUND IMAGE */
 
 .home-container {
     position: relative;
-    min-height: 100vh;
     overflow: hidden;
 }
 
@@ -173,7 +190,17 @@ a.button:hover {
     box-shadow: 0 0 20px var(--light-blue);
 }
 
-/* Draft page styles */
+/* FOOTER */
+footer {
+    background-color: var(--black);
+    color: var(--gold);
+    text-align: center;
+    padding: 1rem;
+    margin-top: auto;
+}
+
+/* DRAFT PAGE */
+
 .player-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -181,57 +208,70 @@ a.button:hover {
     padding: 1rem;
 }
 
-/* Fade in animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Glow animation for important elements */
-@keyframes glow {
-    0% {
-        box-shadow: 0 0 5px var(--light-blue);
-    }
-    50% {
-        box-shadow: 0 0 20px var(--light-blue);
-    }
-    100% {
-        box-shadow: 0 0 5px var(--light-blue);
-    }
-}
-
-#app > div {
-    animation: fadeIn 0.5s ease-out;
-}
-
-/* Navigation hover effects */
-nav a {
+.draft-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    padding: 1rem;
     position: relative;
-    overflow: hidden;
 }
 
-nav a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--gold);
-    transition: width 0.3s ease;
+.player-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    object-fit: cover;
+    border: 3px solid var(--gold);
+    box-shadow: 0 0 10px #0ac8b94d;
 }
 
-nav a:hover::after {
-    width: 100%;
+.player-card {
+    background-color: var(--blue);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    transition: transform .2s ease, box-shadow .2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* button hover effects */
+.player-card:hover {
+    transform: translateY(-2px);
+}
+
+.player-card:hover .player-image {
+    border-color: var(--light-blue);
+    box-shadow: 0 0 15px rgba(10, 200, 185, 0.5);
+}
+
+.player-card h4 {
+    color: var(--gold);
+    margin: 0.5rem 0;
+}
+
+.player-card .team {
+    color: var(--light-blue);
+    font-size: 0.9rem;
+}
+
+.player-card .role {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-size: 1.2em;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+    background-color: rgba(10, 200, 185, 0.1);
+}
+
+/* Role-specific colors */
+.top { color: #FF7F7F; }
+.jungle { color: #6EE7B7; }
+.mid { color: #FFD700; }
+.adc { color: #FF9F7F; }
+.support { color: #C084FC; }
+
 button {
     background: var(--gold);
     color: var(--black);
@@ -251,88 +291,10 @@ button:hover {
     box-shadow: 0 0 20px var(--light-blue);
 }
 
-/* Draft page */
-
-/* Card hover effects (for draft players) */
-.player-card {
-    background-color: var(--blue);
-    border-radius: 8px;
-    padding: 1.5rem;
-    text-align: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Highlight effect for new scores or updates */
-.highlight {
-    animation: glow 2s ease-in-out;
-}
-
-/* Footer styles */
-footer {
-    background-color: var(--black);
-    color: var(--gold);
-    text-align: center;
-    padding: 1rem;
-    margin-top: auto;
-}
-
-/* Draft page specific styles */
-.draft-container {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 2rem;
-    padding: 1rem;
-    position: relative;
-}
-
-.player-card:hover .player-image {
-    border-color: var(--light-blue);
-    box-shadow: 0 0 15px rgba(10, 200, 185, 0.5);
-}
-
-.player-card:hover {
-    transform: translateY(-5px);
-}
-
-.player-image {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    margin-bottom: 1rem;
-    object-fit: cover;
-    border: 2px solid var(--gold);
-    box-shadow: 0 0 10px rgba(10, 200, 185, 0.3);
-}
-
-.player-card h4 {
-    color: var(--gold);
-    margin: 0.5rem 0;
-}
-
-.player-card .team {
-    color: var(--light-blue);
-    font-size: 0.9rem;
-}
-
-.player-card .role {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 4px;
-    margin: 0.5rem 0;
-    background-color: rgba(10, 200, 185, 0.1);
-}
-
 .draft-button {
     background-color: var(--light-blue);
     color: var(--black);
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
     cursor: pointer;
-    transition: all 0.2s ease;
 }
 
 .draft-button:hover:not(:disabled) {
@@ -350,10 +312,11 @@ footer {
     border-radius: 8px;
     position: sticky;
     top: 2rem;
+    margin-top: 2.5rem;
     height: fit-content;
     max-height: calc(100vh - 4rem);
     overflow-y: auto;
-    border: 2px solid var(--gold);
+    border: 3px solid var(--gold);
     transition: all 0.3s ease;
 }
 
@@ -412,7 +375,41 @@ footer {
     cursor: not-allowed;
 }
 
-/* draft page animation */
+.save-team-button {
+    background-color: var(--gold);
+    color: var(--black);
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 2rem;
+    transition: all 0.3s ease;
+}
+
+.save-team-button:hover {
+    background-color: var(--light-blue);
+    transform: translateY(-2px);
+}
+
+/* Loading animation */
+.loading {
+    position: relative;
+}
+
+.loading::after {
+    content: '...';
+    position: absolute;
+    animation: loadingDots 1.5s infinite;
+}
+
+@keyframes loadingDots {
+    0% { content: '.'; }
+    33% { content: '..'; }
+    66% { content: '...'; }
+}
+
+/* Save animation */
 .save-success {
     position: fixed;
     top: 50%;
@@ -446,10 +443,108 @@ footer {
     box-shadow: 0 0 15px rgba(10, 200, 185, 0.3);
 }
 
+/* scoreboard page */
+
+h2,
+h3 {
+    color: var(--gold);
+}
+
+.scoreboard-content {
+    padding-top: 2rem;
+}
+
+.current-match {
+    background: #010A13;
+    color: #C89B3C;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    text-align: center;
+    border: 2px solid var(--gold);
+}
+
+.match-teams {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.score {
+    margin: 0 2rem;
+    font-weight: bold;
+    font-size: 1.3em;
+}
+
+.scoreboard-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.8rem;
+}
+
+.scoreboard-select {
+    padding: 0.8rem;
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    background-color: var(--black);
+    color: var(--gold);
+}
+
+.scoreboard-select:hover {
+    box-shadow: 0 0 10px var(--light-blue);
+}
+
+.stats-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+    padding: 1rem;
+    background: var(--black);
+    color: #C89B3C;
+    font-weight: bold;
+    border: 2px solid var(--gold);
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+    padding: 1rem;
+    align-items: center;
+    background: var(--blue);
+    color: white;
+    border: 2px solid var(--gold);
+    font-weight: 300;
+}
+
+.stats-row:hover {
+    background: var(--gold);
+    color: var(--black);
+    font-weight: 800;
+}
+
+.your-team-summary {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--blue);
+    border-radius: 8px;
+    border: 2px solid #0AC8B9;
+    color: white;
+}
+
+.total-points {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.points-value {
+    color: var(--light-blue);
+    font-size: 1.5rem;
+}
+
 /* leaderboard page */
 
 .leaderboard-content {
-    padding: 2rem;
+    padding-top: 2rem;
     animation: fadeIn 0.5s ease-out;
 }
 
@@ -481,13 +576,11 @@ footer {
     border: 2px solid var(--gold);
     padding: 0.5rem 1rem;
     border-radius: 4px;
-    font-family: 'Cinzel', serif;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .leaderboard-select:hover {
-    background-color: var(--dark-blue);
     box-shadow: 0 0 10px var(--light-blue);
 }
 
@@ -513,7 +606,6 @@ footer {
 }
 
 .leaderboard-row:hover {
-    background: var(--dark-blue);
     transform: translateX(5px);
 }
 
@@ -561,7 +653,7 @@ footer {
     box-shadow: 0 0 15px var(--light-blue);
 }
 
-/* Modal Styles */
+/* Modal Styles - leaderboard */
 .roster-modal {
     position: fixed;
     top: 0;
@@ -663,127 +755,6 @@ footer {
     color: var(--light-blue);
     font-size: 1.2rem;
     font-style: italic;
-}
-
-/* Role-specific colors */
-.top { color: #FF7F7F; }
-.jungle { color: #6EE7B7; }
-.mid { color: #FFD700; }
-.adc { color: #FF9F7F; }
-.support { color: #C084FC; }
-
-/* scoreboard page */
-
-h2,
-h3 {
-    color: var(--gold);
-}
-
-.scoreboard-content {
-    padding: 2rem;
-    color: #0A1428;
-}
-
-.current-match {
-    background: #010A13;
-    color: #C89B3C;
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    text-align: center;
-    border: 2px solid var(--gold);
-}
-
-.match-teams {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-}
-
-.score {
-    margin: 0 2rem;
-    font-weight: bold;
-}
-
-.scoreboard-filters {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.scoreboard-select {
-    padding: 0.5rem;
-    border: 1px solid #0A323C;
-    border-radius: 4px;
-}
-
-.stats-table {
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.stats-header {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
-    padding: 1rem;
-    background: var(--black);
-    color: #C89B3C;
-    font-weight: bold;
-    border: 2px solid var(--gold);
-}
-
-.stats-row {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
-    padding: 1rem;
-    border-bottom: 1px solid #eee;
-    align-items: center;
-    background: var(--blue);
-    color: white;
-    border: 2px solid var(--gold);
-    font-weight: 700;
-}
-
-.stats-row:hover {
-    background: var(--gold);
-    color: var(--black);
-}
-
-.your-team-summary {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    background: var(--blue);
-    border-radius: 8px;
-    border: 2px solid #0AC8B9;
-    color: white;
-}
-
-.total-points {
-    display: flex;
-    justify-content: space-between;
-    font-size: 1.25rem;
-    font-weight: bold;
-}
-
-.points-value {
-    color: #0AC8B9;
-}
-
-.save-team-button {
-    background-color: var(--gold);
-    color: var(--black);
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 2rem;
-    transition: all 0.3s ease;
-}
-
-.save-team-button:hover {
-    background-color: var(--light-blue);
-    transform: translateY(-2px);
 }
 
 .no-teams {

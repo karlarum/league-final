@@ -1,26 +1,15 @@
-import { getProPlayers } from '../riotApi.js';
+//draft.mjs
+import { getProPlayers, isLoading } from '../riotApi.js';
 import { Storage } from '../storage.js';
-// debugging
-console.log('Current teams in storage:', Storage.getAllTeams());
 
-const mockPlayers = [
-    { id: 1, name: "Faker", team: "T1", role: "Mid", points: 0, imageUrl: "/images/Faker.webp" },
-    { id: 2, name: "Chovy", team: "Gen.G", role: "Mid", points: 0, imageUrl: "/images/Chovy.webp" },
-    { id: 3, name: "Zeus", team: "T1", role: "Top", points: 0, imageUrl: "/images/Zeus.webp" },
-    { id: 4, name: "Keria", team: "T1", role: "Support", points: 0, imageUrl: "/images/Keria.webp" },
-    { id: 5, name: "Gumayusi", team: "T1", role: "ADC", points: 0, imageUrl: "/images/Gumayusi.webp" },
-    { id: 6, name: "Oner", team: "T1", role: "Jungle", points: 0, imageUrl: "/images/Oner.webp" }
-];
-
-// Keep track of drafted players
+let players = [];
 let draftedPlayers = {};
 let errorMessage = '';
-let players = [];
 
 export function draftContent() {
     setTimeout(() => {
         setupDraftEvents();
-        loadPlayers(); // fetching the players
+        loadPlayers();
     }, 0);
 
     return `
@@ -32,9 +21,9 @@ export function draftContent() {
             <div class="draft-container">
                 <div class="available-players">
                     <h3>Available Players</h3>
-                    <div class="player-grid">
-                        <p>Loading players...</p>
-                    </div>
+                    <div id="player-selection" class="player-grid">
+                            <p class="loading">Loading available players</p>
+                        </div>
                 </div>
 
                 <div class="your-team">
@@ -51,18 +40,58 @@ export function draftContent() {
         </div>
     `;
 }
-// function to fetch players
+
 async function loadPlayers() {
     try {
+        // Listen for player updates
+        window.addEventListener('playersUpdated', (event) => {
+            players = event.detail.players;
+            updatePlayerGrid();
+        });
+
         players = await getProPlayers();
-        const playerGrid = document.querySelector('.player-grid');
-        if (playerGrid) {
-            playerGrid.innerHTML = renderAvailablePlayers();
-        }
-        setupDraftEvents();
+        updatePlayerGrid();
     } catch (error) {
         console.error('Error loading players:', error);
+        errorMessage = 'Error loading players. Please try again.';
+        updatePlayerGrid();
     }
+}
+
+function updatePlayerGrid() {
+    const playerGrid = document.querySelector('.player-grid');
+    if (playerGrid) {
+        playerGrid.innerHTML = players.length > 0 ? 
+            renderAvailablePlayers() : 
+            '<p>No players available</p>';
+        setupDraftEvents();
+    }
+}
+
+function renderAvailablePlayers() {
+    return players.map(player => `
+        <div class="player-card" data-player-id="${player.id}">
+            <div class="player-image-container">
+                <img src="${player.imageUrl}" 
+                     alt="${player.name}" 
+                     class="player-image">
+            </div>
+            <h4 class="player-name">${player.name}</h4>
+            <div class="player-stats">
+                <span class="wins">W: ${player.wins}</span>
+                <span class="losses">L: ${player.losses}</span>
+                ${player.winRate ? `<span class="winrate">WR: ${player.winRate}%</span>` : ''}
+                ${player.leaguePoints ? `<span class="lp">LP: ${player.leaguePoints}</span>` : ''}
+            </div>
+            <p class="team">${player.team}</p>
+            <p class="role ${player.role?.toLowerCase()}">${player.role}</p>
+            <button class="draft-button ${draftedPlayers[player.role] ? 'disabled' : ''}" 
+                    data-player-id="${player.id}"
+                    ${draftedPlayers[player.role] ? 'disabled' : ''}>
+                ${draftedPlayers[player.role]?.id === player.id ? 'Drafted' : 'Draft Player'}
+            </button>
+        </div>
+    `).join('');
 }
 
 function renderTeamSlots() {
@@ -80,25 +109,37 @@ function renderTeamSlots() {
     }).join('');
 }
 
-function renderAvailablePlayers() {
-    return players.map(player => `
-        <div class="player-card" data-player-id="${player.id}">
-            <img src="${player.imageUrl || '/api/placeholder/150/150'}" alt="${player.name}" class="player-image">
-            <h4>${player.name}</h4>
-            <p class="team">${player.team}</p>
-            <p class="role ${player.role.toLowerCase()}">${player.role}</p>
-            <button class="draft-button ${draftedPlayers[player.role] ? 'disabled' : ''}" 
-                    data-player-id="${player.id}"
-                    ${draftedPlayers[player.role] ? 'disabled' : ''}>
-                ${draftedPlayers[player.role]?.id === player.id ? 'Drafted' : 'Draft Player'}
-            </button>
-        </div>
-    `).join('');
-}
+// function renderAvailablePlayers() {
+//     return players.map(player => `
+//         <div class="player-card" data-player-id="${player.id}">
+//             <div class="player-image-container">
+//                 <img src="${player.imageUrl}" 
+//                      alt="${player.name}" 
+//                      class="player-image">
+//             </div>
+//             <h4 class="player-name">${player.name}</h4>
+//             <div class="player-stats">
+//                 <span class="wins">W: ${player.wins}</span>
+//                 <span class="losses">L: ${player.losses}</span>
+//             </div>
+//             <p class="team">${player.team}</p>
+//             <p class="role ${player.role?.toLowerCase()}">${player.role}</p>
+//             <button class="draft-button ${draftedPlayers[player.role] ? 'disabled' : ''}" 
+//                     data-player-id="${player.id}"
+//                     ${draftedPlayers[player.role] ? 'disabled' : ''}>
+//                 ${draftedPlayers[player.role]?.id === player.id ? 'Drafted' : 'Draft Player'}
+//             </button>
+//         </div>
+//     `).join('');
+// }
 
 function draftPlayer(playerId) {
-    const player = players.find(p => p.id === Number(playerId));
-    if (!player) return;
+    console.log('Attempting to draft player:', playerId); // Debugging
+    const player = players.find(p => p.id === playerId);
+    if (!player) {
+        console.log('Player not found:', playerId);
+        return;
+    }
 
     if (draftedPlayers[player.role]) {
         errorMessage = `You already have a ${player.role} player. Undraft ${draftedPlayers[player.role].name} first!`;
@@ -168,6 +209,7 @@ function setupDraftEvents() {
     document.querySelectorAll('.draft-button').forEach(button => {
         button.addEventListener('click', (e) => {
             const playerId = e.target.dataset.playerId;
+            console.log('Draft button clicked for player:', playerId); // Debug log
             if (playerId) draftPlayer(playerId);
         });
     });
@@ -176,10 +218,14 @@ function setupDraftEvents() {
     document.querySelectorAll('.undraft-button').forEach(button => {
         button.addEventListener('click', (e) => {
             const role = e.target.dataset.role;
+            console.log('Undraft button clicked for role:', role); // Debug log
             if (role) undraftPlayer(role);
         });
     });
 
     // Save team button listener
-    document.getElementById('save-team')?.addEventListener('click', saveDraftedTeam);
+    const saveButton = document.getElementById('save-team');
+    if (saveButton) {
+        saveButton.addEventListener('click', saveDraftedTeam);
+    }
 }
