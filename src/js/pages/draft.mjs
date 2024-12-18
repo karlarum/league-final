@@ -109,30 +109,6 @@ function renderTeamSlots() {
     }).join('');
 }
 
-// function renderAvailablePlayers() {
-//     return players.map(player => `
-//         <div class="player-card" data-player-id="${player.id}">
-//             <div class="player-image-container">
-//                 <img src="${player.imageUrl}" 
-//                      alt="${player.name}" 
-//                      class="player-image">
-//             </div>
-//             <h4 class="player-name">${player.name}</h4>
-//             <div class="player-stats">
-//                 <span class="wins">W: ${player.wins}</span>
-//                 <span class="losses">L: ${player.losses}</span>
-//             </div>
-//             <p class="team">${player.team}</p>
-//             <p class="role ${player.role?.toLowerCase()}">${player.role}</p>
-//             <button class="draft-button ${draftedPlayers[player.role] ? 'disabled' : ''}" 
-//                     data-player-id="${player.id}"
-//                     ${draftedPlayers[player.role] ? 'disabled' : ''}>
-//                 ${draftedPlayers[player.role]?.id === player.id ? 'Drafted' : 'Draft Player'}
-//             </button>
-//         </div>
-//     `).join('');
-// }
-
 function draftPlayer(playerId) {
     console.log('Attempting to draft player:', playerId); // Debugging
     const player = players.find(p => p.id === playerId);
