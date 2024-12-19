@@ -1,4 +1,3 @@
-//leaderboard.mjs
 import { Storage } from '../storage.js';
 
 function leaderboardContent() {

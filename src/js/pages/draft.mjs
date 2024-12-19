@@ -1,4 +1,3 @@
-//draft.mjs
 import { getProPlayers, isLoading } from '../riotApi.js';
 import { Storage } from '../storage.js';
 
